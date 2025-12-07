@@ -2,7 +2,7 @@
 
 *Generated: December 7, 2025 by Claude Code, Opus 4.5*
 
-This document identifies relevant benchmarks for evaluating each transcription workflow.
+This document identifies existing benchmarks and leaderboards for evaluating each transcription workflow.
 
 ---
 
@@ -17,154 +17,125 @@ Traditional speech recognition benchmarks focused on transcription accuracy.
 | **WER** (Word Error Rate) | (S+D+I)/N | Lower is better, <5% excellent |
 | **CER** (Character Error Rate) | Character-level WER | Used for non-English, tonal languages |
 | **RTF** (Real-Time Factor) | Processing time / audio duration | <1.0 = real-time capable |
-| **Latency** | Time to first token | Critical for streaming |
 
-### Standard Benchmarks
+### Established Benchmarks
 
-| Benchmark | Domain | Size | Notes |
-|-----------|--------|------|-------|
-| **LibriSpeech** | Audiobooks | 960h | De facto standard for English |
-| **LibriSpeech test-clean** | Clean speech | 5.4h | Primary comparison metric |
-| **LibriSpeech test-other** | Noisy/accented | 5.3h | Robustness test |
-| **Common Voice** | Crowdsourced | 2,500h+ | Multilingual, diverse accents |
-| **GigaSpeech** | Multi-domain | 10,000h | YouTube, podcasts, audiobooks |
-| **VoxPopuli** | Parliament | 400k+ hours | EU languages, formal speech |
-| **FLEURS** | Multilingual | 102 languages | Cross-lingual evaluation |
-| **Earnings-22** | Financial | 119h | Domain-specific (finance) |
-| **TED-LIUM** | TED Talks | 452h | Presentation style |
-| **AMI Corpus** | Meetings | 100h | Multi-speaker, overlapping |
-| **CHiME** | Noisy | Various | Adverse acoustic conditions |
+| Benchmark | Domain | Size | Link |
+|-----------|--------|------|------|
+| **LibriSpeech** | Audiobooks | 960h | [openslr.org/12](https://www.openslr.org/12/) |
+| **Common Voice** | Crowdsourced | 2,500h+ | [commonvoice.mozilla.org](https://commonvoice.mozilla.org/) |
+| **GigaSpeech** | Multi-domain | 10,000h | [github.com/SpeechColab/GigaSpeech](https://github.com/SpeechColab/GigaSpeech) |
+| **VoxPopuli** | EU Parliament | 400k+ hours | [github.com/facebookresearch/voxpopuli](https://github.com/facebookresearch/voxpopuli) |
+| **FLEURS** | Multilingual | 102 languages | [huggingface.co/datasets/google/fleurs](https://huggingface.co/datasets/google/fleurs) |
+| **TED-LIUM 3** | TED Talks | 452h | [openslr.org/51](https://www.openslr.org/51/) |
+| **AMI Corpus** | Meetings | 100h | [groups.inf.ed.ac.uk/ami/corpus](https://groups.inf.ed.ac.uk/ami/corpus/) |
+| **CHiME Challenge** | Noisy speech | Various | [chimechallenge.org](https://www.chimechallenge.org/) |
+| **Earnings-22** | Financial calls | 119h | [github.com/revdotcom/speech-datasets](https://github.com/revdotcom/speech-datasets) |
+| **SPGISpeech** | Financial | 5,000h | [datasets.kensho.com/datasets/spgispeech](https://datasets.kensho.com/datasets/spgispeech) |
 
-### Leaderboards
+### Active Leaderboards
 
-- [Open ASR Leaderboard](https://huggingface.co/spaces/hf-audio/open_asr_leaderboard) - Hugging Face
-- [Papers With Code ASR](https://paperswithcode.com/task/speech-recognition)
+| Leaderboard | Maintained By | Link |
+|-------------|---------------|------|
+| **Open ASR Leaderboard** | Hugging Face | [huggingface.co/spaces/hf-audio/open_asr_leaderboard](https://huggingface.co/spaces/hf-audio/open_asr_leaderboard) |
+| **Papers With Code - ASR** | Papers With Code | [paperswithcode.com/task/speech-recognition](https://paperswithcode.com/task/speech-recognition) |
+| **ESB Benchmark** | Hugging Face | [huggingface.co/spaces/esb/leaderboard](https://huggingface.co/spaces/esb/leaderboard) |
 
 ---
 
 ## Workflow B: Pipeline/Cascaded Benchmarks
 
-Two-stage systems require evaluation of both ASR accuracy and LLM text quality.
+Two-stage systems use ASR benchmarks for stage 1, plus text quality metrics for stage 2.
 
-### ASR Stage (Same as Workflow A)
+### ASR Stage
 
-Use standard WER/CER benchmarks listed above.
+Use benchmarks from Workflow A above.
 
-### LLM Post-Processing Stage
+### LLM Text Quality (Established Metrics)
 
-| Metric | Description | Application |
-|--------|-------------|-------------|
-| **BLEU** | N-gram overlap | Translation-style comparison |
-| **ROUGE** | Recall-oriented | Summarization quality |
-| **BERTScore** | Semantic similarity | Meaning preservation |
-| **Edit Distance** | Levenshtein distance | Minimal changes metric |
-| **Human Preference** | A/B testing | Gold standard |
+| Metric | Description | Reference |
+|--------|-------------|-----------|
+| **BLEU** | N-gram overlap | [aclweb.org/anthology/P02-1040](https://aclweb.org/anthology/P02-1040/) |
+| **ROUGE** | Recall-oriented summarization | [aclweb.org/anthology/W04-1013](https://aclweb.org/anthology/W04-1013/) |
+| **BERTScore** | Semantic similarity | [github.com/Tiiiger/bert_score](https://github.com/Tiiiger/bert_score) |
+| **METEOR** | Alignment-based | [aclweb.org/anthology/W05-0909](https://aclweb.org/anthology/W05-0909/) |
 
-### Combined Pipeline Metrics
+### Readability Metrics (Standard)
 
 | Metric | Description |
 |--------|-------------|
-| **End-to-End WER** | WER on final cleaned output |
-| **Information Retention** | Key facts preserved post-LLM |
-| **Readability Score** | Flesch-Kincaid, Gunning Fog |
-| **Fluency Rating** | Human evaluation of naturalness |
+| **Flesch-Kincaid** | Grade level readability |
+| **Gunning Fog Index** | Text complexity |
+| **SMOG Index** | Years of education needed |
 
-### Proposed Benchmarks (Not Yet Standardized)
+### Note on Pipeline Benchmarks
 
-| Benchmark | Purpose |
-|-----------|---------|
-| **Dictation-to-Essay** | Raw dictation vs polished output |
-| **Transcript Cleaning** | Filler word removal accuracy |
-| **Format Compliance** | Following output format instructions |
+No standardized end-to-end benchmarks exist specifically for ASR+LLM pipelines. Evaluation typically uses ASR metrics on intermediate output and summarization/editing metrics on final output separately.
 
 ---
 
 ## Workflow C: Audio Multimodal Benchmarks
 
-Native audio understanding requires fundamentally different evaluation approaches.
+Native audio understanding benchmarks are emerging but less mature than ASR benchmarks.
 
-### Emerging Audio-Language Benchmarks
+### Audio-Language Understanding Benchmarks
 
-| Benchmark | Developer | Focus |
-|-----------|-----------|-------|
-| **AIR-Bench** | Various | Audio Information Retrieval |
-| **AudioBench** | Various | Comprehensive audio understanding |
-| **Dynamic-SUPERB** | Various | Diverse audio tasks |
-| **MMAU** | Various | Multimodal Audio Understanding |
-| **SpeechVerse** | Academic | Speech-language tasks |
-| **AudioCaps** | Various | Audio captioning |
+| Benchmark | Focus | Link |
+|-----------|-------|------|
+| **AIR-Bench** | Audio Information Retrieval | [github.com/OFA-Sys/AIR-Bench](https://github.com/OFA-Sys/AIR-Bench) |
+| **AudioBench** | Comprehensive audio understanding | [github.com/AudioLLMs/AudioBench](https://github.com/AudioLLMs/AudioBench) |
+| **Dynamic-SUPERB** | Diverse speech tasks | [github.com/dynamic-superb/dynamic-superb](https://github.com/dynamic-superb/dynamic-superb) |
+| **MMAU** | Multimodal Audio Understanding | [sakshi113.github.io/mmau_homepage](https://sakshi113.github.io/mmau_homepage/) |
+| **AudioCaps** | Audio captioning | [audiocaps.github.io](https://audiocaps.github.io/) |
+| **Clotho** | Audio captioning | [zenodo.org/record/3490684](https://zenodo.org/record/3490684) |
 
-### Task-Specific Benchmarks
+### Speech-Specific Benchmarks
 
-| Task | Benchmark | Metric |
-|------|-----------|--------|
-| **Audio QA** | Spoken-SQuAD | F1, EM |
-| **Audio Captioning** | AudioCaps, Clotho | CIDEr, SPICE |
-| **Sound Classification** | ESC-50, AudioSet | Accuracy |
-| **Music Understanding** | MusicCaps | Various |
-| **Speech Emotion** | IEMOCAP, MELD | Accuracy, F1 |
-| **Speaker Identification** | VoxCeleb | EER |
+| Benchmark | Task | Link |
+|-----------|------|------|
+| **Spoken-SQuAD** | Speech QA | [github.com/chiahsuan156/Spoken-SQuAD](https://github.com/chiahsuan156/Spoken-SQuAD) |
+| **SLUE** | Spoken Language Understanding | [asappresearch.github.io/slue-toolkit](https://asappresearch.github.io/slue-toolkit/) |
+| **SUPERB** | Speech processing | [superbbenchmark.org](https://superbbenchmark.org/) |
+| **ML-SUPERB** | Multilingual speech | [github.com/espnet/espnet](https://github.com/espnet/espnet) |
 
-### Prompt-Guided Transcription Metrics
+### Audio Classification Benchmarks
 
-No standardized benchmarks exist yet. Proposed evaluation dimensions:
+| Benchmark | Domain | Link |
+|-----------|--------|------|
+| **ESC-50** | Environmental sounds | [github.com/karolpiczak/ESC-50](https://github.com/karolpiczak/ESC-50) |
+| **AudioSet** | General audio | [research.google.com/audioset](https://research.google.com/audioset/) |
+| **VoxCeleb** | Speaker recognition | [robots.ox.ac.uk/~vgg/data/voxceleb](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/) |
+| **IEMOCAP** | Speech emotion | [sail.usc.edu/iemocap](https://sail.usc.edu/iemocap/) |
+| **MusicCaps** | Music understanding | [kaggle.com/datasets/googleai/musiccaps](https://www.kaggle.com/datasets/googleai/musiccaps) |
 
-| Dimension | Evaluation Method |
-|-----------|-------------------|
-| **Instruction Following** | Does output match prompt format? |
-| **Selective Transcription** | Correctly identifies what to include/exclude |
-| **Summarization Quality** | ROUGE on audio summaries |
-| **Format Accuracy** | JSON/Markdown/structured output correctness |
-| **Context Integration** | Uses provided context appropriately |
+### Audio Multimodal Leaderboards
 
-### Vendor-Specific Benchmarks
-
-| Vendor | Benchmark | Notes |
-|--------|-----------|-------|
-| Google (Gemini) | Internal audio understanding suite | Not public |
-| OpenAI (GPT-4o) | Internal voice evaluation | Not public |
-| Alibaba (Qwen2-Audio) | Published in paper | Available |
+| Leaderboard | Focus | Link |
+|-------------|-------|------|
+| **AudioBench Leaderboard** | Audio LLMs | [huggingface.co/spaces/AudioLLMs/AudioBench-Leaderboard](https://huggingface.co/spaces/AudioLLMs/AudioBench-Leaderboard) |
+| **SUPERB Leaderboard** | Speech tasks | [superbbenchmark.org/leaderboard](https://superbbenchmark.org/leaderboard) |
+| **Papers With Code - Audio** | Multiple tasks | [paperswithcode.com/area/audio](https://paperswithcode.com/area/audio) |
 
 ---
 
-## Cross-Workflow Comparison Framework
+## Benchmark Gaps
 
-### Proposed Unified Metrics
+The following evaluation needs lack standardized benchmarks as of December 2025:
 
-To compare across all three workflows fairly:
-
-| Metric | Measures | Applies To |
-|--------|----------|------------|
-| **Semantic Accuracy** | Meaning preserved | A, B, C |
-| **Task Completion** | Did it do what was asked? | B, C |
-| **Compute Efficiency** | FLOPS per minute of audio | A, B, C |
-| **Latency** | End-to-end time | A, B, C |
-| **Cost** | API cost per hour of audio | A, B, C |
-| **Flexibility** | Range of output formats | B, C |
-
-### Suggested Evaluation Protocol
-
-For comparing workflows on dictation-to-essay tasks:
-
-1. **Source Material**: 1-hour unscripted dictation recordings
-2. **Ground Truth**: Human-edited "ideal" output
-3. **Metrics**:
-   - Semantic similarity (BERTScore) to ground truth
-   - Readability scores
-   - Information retention (key facts preserved)
-   - Human preference ranking
-4. **Report**: Cost, latency, and quality trade-offs
+| Gap | Description |
+|-----|-------------|
+| **Prompt-guided transcription** | No benchmark for instruction-following in audio-to-text |
+| **Long-form audio** | Most benchmarks use clips <30s; limited 1hr+ evaluation |
+| **Real-world dictation** | Academic datasets use prepared speech, not off-the-cuff |
+| **Cross-modal reasoning** | Audio + vision + text combined understanding |
 
 ---
 
-## Current Benchmark Gaps
+## Where to Track Benchmark Progress
 
-The field lacks standardized benchmarks for:
-
-1. **Prompt-guided transcription quality** - How well does the model follow formatting instructions?
-2. **Long-form audio understanding** - Most benchmarks use short clips (<30s)
-3. **Real-world dictation** - Academic benchmarks use clean, prepared speech
-4. **Cross-modal reasoning** - Audio + visual + text combined
-5. **Instruction robustness** - Same audio, different prompts
-
-These gaps represent opportunities for research contribution.
+| Resource | Type | Link |
+|----------|------|------|
+| **Papers With Code** | Benchmark aggregator | [paperswithcode.com](https://paperswithcode.com/) |
+| **Hugging Face Spaces** | Community leaderboards | [huggingface.co/spaces](https://huggingface.co/spaces) |
+| **arXiv cs.SD** | Speech/audio papers | [arxiv.org/list/cs.SD/recent](https://arxiv.org/list/cs.SD/recent) |
+| **arXiv eess.AS** | Audio/speech engineering | [arxiv.org/list/eess.AS/recent](https://arxiv.org/list/eess.AS/recent) |
