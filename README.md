@@ -110,7 +110,7 @@ See **[models.md](models.md)** for detailed profiles:
 | Qwen2-Audio | Alibaba | 7B | Qwen License |
 | Kimi-Audio | Moonshot AI | TBD | TBD |
 | Phi-4-Multimodal | Microsoft | ~14B | MIT |
-| Ultravox | Fixie.ai | 1B - 27B | Open Source |
+| [Ultravox](https://ultravox.ai/) | Fixie.ai | 1B - 27B | Open Source |
 
 ## Providers
 
